@@ -5,7 +5,7 @@ class Solution {
         for (int i = 1; i < ratings.length; i++) {
             if (ratings[i] >= ratings[i-1]) {
                 if (countDown > 0) {
-                    total += countDown*(countDown+1)/2; // arithmetic progression
+                    total += countDown*(countDown+1)/2; 
                     if (countDown >= prev) total += countDown - prev + 1;
                     countDown = 0;
                     prev = 1;
@@ -14,7 +14,7 @@ class Solution {
                 total += prev;
             } else countDown++;
         }
-        if (countDown > 0) { // if we were descending at the end
+        if (countDown > 0) { 
             total += countDown*(countDown+1)/2;
             if (countDown >= prev) total += countDown - prev + 1;
         }
