@@ -1,27 +1,17 @@
 class Solution {
     public boolean find132pattern(int[] nums) {
-        int length = nums.length;
-        
-        if (length < 3)
-            return false;
-
-        Deque<Integer> decreasingStack = new ArrayDeque<>(length);
-
-        int maxThirdElement = Integer.MIN_VALUE;
-
-        for (int i = length - 1; i >= 0; i--) {
-            int currentNumber = nums[i];
-
-            if (currentNumber < maxThirdElement)
-                return true; 
-
-            while (!decreasingStack.isEmpty() && decreasingStack.peek() < currentNumber) {
-                maxThirdElement = decreasingStack.pop();
+        Stack<Integer> stack = new Stack<>();
+        int max3 = Integer.MIN_VALUE;
+        for (int i = nums.length - 1; i >= 0; i--) {
+            if (nums[i] < max3)
+                return true;
+            while (!stack.isEmpty() && stack.peek() < nums[i]) {
+                max3 = stack.peek();
+                stack.pop();
             }
-
-            decreasingStack.push(currentNumber);
+            stack.push(nums[i]);
         }
 
-        return false; 
+        return false;
     }
 }
