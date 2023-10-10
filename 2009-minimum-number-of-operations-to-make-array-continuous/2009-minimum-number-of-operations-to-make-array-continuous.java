@@ -1,26 +1,16 @@
 class Solution {
     public int minOperations(int[] nums) {
-        int n = nums.length;
-        int ans=n;
         Arrays.sort(nums);
-        int m=1;
-        int j=0;
-        for(int i=1;i<n;i++)
-        {
-            if(nums[i]!=nums[i-1])
-            {
-                nums[m]=nums[i];
-                m++;
-            }
-        }
-        for(int i=0;i<m;i++)
-        {
-            while(j<m && nums[j]<nums[i]+n)
-            {
+        int count=Integer.MAX_VALUE,j=1,dup=0;
+        int[] dupArr = new int[nums.length];
+        for(int i=0;i<nums.length;i++) {
+            while(j<nums.length&&nums[j]<=nums[i]+nums.length-1) {
+                if(nums[j]==nums[j-1]) ++dup;
+                dupArr[j]=dup;
                 j++;
             }
-            ans = Math.min(ans, n-j+i);
+            count = Math.min(count, i+(nums.length-j)+dup-dupArr[i]);
         }
-        return ans;
+        return count;
     }
 }
