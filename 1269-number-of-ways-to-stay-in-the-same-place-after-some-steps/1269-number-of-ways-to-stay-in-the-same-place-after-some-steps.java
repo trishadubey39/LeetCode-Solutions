@@ -1,26 +1,19 @@
 class Solution {
     public int numWays(int steps, int arrLen) {
-        HashMap<String,Long> memo=new HashMap();
-        
-        return (int)solve(steps, arrLen, 0,memo)% 1000000007;
+        int mod=(int) 1e9 + 7;
+        arrLen=Math.min(steps,arrLen);
 
-    }
-    
-    public long solve(int steps, int arrLen, int currIndex,HashMap<String,Long> memo){
-        if(currIndex==0 && steps==0) return 1;
-        if(currIndex < 0|| currIndex >= arrLen || steps <=0) 
-        return 0;
-
-         String currentKey=String.valueOf(currIndex)+"@"+String.valueOf(steps);
-         if(memo.containsKey(currentKey))
-              return memo.get(currentKey);
-
-          long stay=solve(steps-1,arrLen,currIndex,memo);
-          long left=solve(steps-1,arrLen,currIndex-1,memo);
-          long right=solve(steps-1,arrLen,currIndex+1,memo);
-
-          long answer=(stay+left+right)% 1000000007;
-          memo.put(currentKey,answer);
-          return memo.get(currentKey);
+        int[][] dp=new int[steps+1][arrLen];
+        dp[0][0]=1;
+        for(int i=1;i<=steps;i++){
+            for(int j=arrLen-1;j>=0;j--){
+                int right=0,left=0,stay=0;
+                if(j<arrLen-1) right=dp[i-1][j+1];
+                if(j>0) left=dp[i-1][j-1];
+                stay=dp[i-1][j];
+                dp[i][j]=((right%mod+left%mod)%mod+stay)%mod;
+            }
+        }
+        return dp[steps][0];
     }
 }
