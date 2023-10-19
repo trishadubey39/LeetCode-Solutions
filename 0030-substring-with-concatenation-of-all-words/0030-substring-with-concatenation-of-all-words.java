@@ -1,22 +1,33 @@
 class Solution {
     public List<Integer> findSubstring(String s, String[] words) {
-        List<Integer> list = new ArrayList<>();
-        HashMap<String, Integer> map = new HashMap<>();
-        for(String w: words) map.put(w, map.getOrDefault(w,0)+1);
-
-        int wordSize = words[0].length(), windowSize = words.length*wordSize;
-        for(int i=0; i<=s.length()-windowSize; i++){
-            int left=i; 
-            HashMap<String, Integer> wordsSeen = new HashMap<>();
-
-            for(int right=i; right<=i+windowSize-wordSize; right+=wordSize){
-                String rightWord = s.substring(right, right+wordSize);
-                if(!map.containsKey(rightWord)) break;
-                wordsSeen.put(rightWord,wordsSeen.getOrDefault(rightWord,0)+1);
-                if(wordsSeen.get(rightWord)>map.get(rightWord)) break;
-                if(right==i+windowSize-wordSize) list.add(left);
+        int wordLength = words[0].length();
+        int totalWordsLength = wordLength * words.length;
+        Map<String, Integer> hash = new HashMap<>();
+        List<Integer> ans = new ArrayList<>();
+        char[] s2 = s.toCharArray();
+        for (String value : words) {
+            hash.putIfAbsent(value, hash.size());
+        }
+        int[] count = new int[hash.size()];
+        for (String word : words) {
+            count[hash.get(word)]++;
+        }
+        for (int i = 0; i < wordLength; i++) {
+            for (int j = i; j <= s.length() - totalWordsLength; j += wordLength) {
+                int[] localCount = new int[hash.size()];
+                for (int k = j + totalWordsLength - wordLength; k >= j; k -= wordLength) {
+                    String str = new String(s2, k, wordLength);     // [ k, k+wordLength )
+                    Integer key = hash.get(str);
+                    if (!(key != null && count[key] >= ++localCount[key])) {
+                        j = k;
+                        break;
+                    }
+                    if (j == k) {
+                        ans.add(j);
+                    }
+                }
             }
         }
-        return list;
+        return ans;
     }
 }
