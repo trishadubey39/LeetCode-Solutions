@@ -1,15 +1,23 @@
 class Solution {
     public boolean isPowerOfFour(int n) {
-        for (int i = 0; i <= 15; i++) {
-            int powerOfFour = (int) Math.pow(4, i);
-        
-            if (powerOfFour == n)
-                return true;
-            
-            if (powerOfFour > n)
-                return false;
+        if (n <= 0) return false;
+        if (n == 1) return true;
+
+        if ((lsb(n) % 2 == 0) && (n & (n - 1)) == 0) {
+            return true;
+        } else
+            return false;
+    }
+
+    private int lsb(int n) {
+        int p = 1;
+        while (n > 0) {
+            if ((n & 1) > 0) {
+                return p - 1;
+            }
+            p++;
+            n = n >> 1;
         }
-        
-        return false;
+        return -1;
     }
 }
