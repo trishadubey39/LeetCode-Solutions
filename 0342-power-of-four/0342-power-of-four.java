@@ -1,23 +1,6 @@
 class Solution {
     public boolean isPowerOfFour(int n) {
-        if (n <= 0) return false;
-        if (n == 1) return true;
-
-        if ((lsb(n) % 2 == 0) && (n & (n - 1)) == 0) {
-            return true;
-        } else
-            return false;
-    }
-
-    private int lsb(int n) {
-        int p = 1;
-        while (n > 0) {
-            if ((n & 1) > 0) {
-                return p - 1;
-            }
-            p++;
-            n = n >> 1;
-        }
-        return -1;
+        if (n == 0) return false;
+        return (Math.log(n) / Math.log(4)) % 1 == 0;
     }
 }
