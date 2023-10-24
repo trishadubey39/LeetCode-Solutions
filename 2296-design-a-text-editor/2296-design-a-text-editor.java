@@ -1,42 +1,39 @@
 class TextEditor
 {
-    StringBuilder sb; // Stores text
-    int cur; // Current pointer location
-    public TextEditor()
-    {
-        sb = new StringBuilder();
-        cur = 0;
+    StringBuilder str = new StringBuilder();
+    int cursorIndex = 0;
+
+    public void addText(String text) {
+        str.insert(cursorIndex, text);
+        cursorIndex +=text.length();
     }
-    
-    public void addText(String text)
-    {
-        sb.insert(cur,text);
-        cur+= text.length(); // Shift pointer to the right of added text
+
+    public int deleteText(int k) {
+        var index = cursorIndex;
+        if (cursorIndex>k) {
+            str.delete(cursorIndex - k, cursorIndex);
+            cursorIndex -= k;
+            return k;
+        }
+        else {
+            str.delete(0, cursorIndex);
+            cursorIndex = 0;
+        }
+        return index;
     }
-    
-    public int deleteText(int k)
-    {
-        int l = Math.max(0,cur-k);
-        int r = cur;
-        sb.delete(l,r);
-        cur = l; // Shift pointer to the left of deleted text
-        return r-l;
+
+    public String cursorLeft(int k) {
+        if (cursorIndex>=k) cursorIndex-=k;
+        else cursorIndex = 0;
+        var min = Math.min(10, cursorIndex);
+        return str.substring(cursorIndex-min, cursorIndex);
     }
-    
-    public String cursorLeft(int k)
-    {
-        int start = Math.max(0,cur-k); // Maximum text present on the left
-        cur = start; // Updates pointer
-        int l = Math.max(0,cur-10);
-        return sb.substring(l,cur);
-    }
-    
-    public String cursorRight(int k)
-    {
-        int start = Math.min(sb.length(),cur+k); // Maximum text present on the right
-        cur = start; // Updates pointer
-        int r = Math.max(0,cur-10);
-        return sb.substring(r,cur);
+
+    public String cursorRight(int k) {
+        if (str.length()-cursorIndex>=k) cursorIndex+=k;
+        else cursorIndex = str.length();
+        var min = Math.min(10, cursorIndex);
+        return str.substring(cursorIndex-min, cursorIndex);
     }
 }
 
