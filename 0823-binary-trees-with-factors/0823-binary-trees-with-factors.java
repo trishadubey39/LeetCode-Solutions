@@ -1,27 +1,23 @@
 class Solution {
     public int numFactoredBinaryTrees(int[] arr) {
         Arrays.sort(arr);
-        Map<Integer, Long> subtreeCount = new HashMap<>();
+        Map<Integer, Long> dp = new HashMap<>();
 
-        for (int root : arr) {
-            subtreeCount.put(root, 1L);
+        for (int i = 0; i < arr.length; i++) {
+            dp.put(arr[i], 1L);
 
-            for (int factor : arr) {
-                if (factor >= root) {
-                    break;
-                }
-
-                if (root % factor == 0 && subtreeCount.containsKey(root / factor)) {
-                    subtreeCount.put(root, (subtreeCount.get(root) + subtreeCount.get(factor) * subtreeCount.get(root / factor)));
+            for (int j = 0; j < i; j++) {
+                if (arr[i] % arr[j] == 0 && dp.containsKey(arr[i] / arr[j])) {
+                    dp.put(arr[i], dp.get(arr[i]) + dp.get(arr[j]) * dp.get(arr[i] / arr[j]));
                 }
             }
         }
 
-        long totalTrees = 0L;
-        for (int key : subtreeCount.keySet()) {
-            totalTrees = (totalTrees + subtreeCount.get(key)) % 1_000_000_007;
+        long result = 0;
+        for (long val : dp.values()) {
+            result += val;
         }
 
-        return (int) totalTrees;
+        return (int) (result % (Math.pow(10, 9) + 7));
     }
 }
