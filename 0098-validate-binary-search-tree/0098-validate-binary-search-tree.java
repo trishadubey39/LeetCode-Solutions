@@ -14,19 +14,17 @@
  * }
  */
 class Solution {
-    ArrayList<Integer> ls= new ArrayList<>();
+    private long minVal = Long.MIN_VALUE;
     public boolean isValidBST(TreeNode root) {
-        if(root==null)return true;
-        isValidBST(root.left);
-        ls.add(root.val);
-        isValidBST(root.right);
-        return isValid(ls);
-    }
-    private boolean isValid(ArrayList<Integer> ls){
-        if(ls.size() == 1) return true;
-        for(int i=1;i<ls.size();i++){
-            if(ls.get(i)<=ls.get(i-1)) return false;
-        }
+        if (root == null) return true; 
+        if (!isValidBST(root.left)) return false;
+        
+        if (minVal >= root.val) return false; 
+
+        minVal = root.val;
+
+        if (!isValidBST(root.right)) return false;
+
         return true;
-    }
+    } 
 }
