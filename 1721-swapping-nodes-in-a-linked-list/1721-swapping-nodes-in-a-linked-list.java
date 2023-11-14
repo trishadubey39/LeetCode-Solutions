@@ -10,48 +10,48 @@
  */
 class Solution {
     public ListNode swapNodes(ListNode head, int k) {
-
-        if(head == null){
-            return head;
-        }
-
-        ListNode temp=head;
-
-        int size=0;
-
-        while(temp != null){
-            size++;
-            temp=temp.next;
-        }
-        temp=head;
-
-        for(int i=1;i<k;i++){
-            temp=temp.next;
-        }
-
-         int val1=temp.val;
-
-         int k2=size-k;
-         
-         temp=head;
-         for(int i=0;i<k2;i++){
-             temp=temp.next;
-         }
-
-         int val2=temp.val;
+        ListNode t1=head;
+        ListNode t2=head;
+        ListNode t3=head;
+        ListNode t4=head;
+        ListNode t5=head;
+        int i=1;
         
-         temp=head;
-           for(int i=1;i<k;i++){
-            temp=temp.next;
+        while(t3.next!=null){
+            i++;
+            if(i<=k){
+                t5=t1;
+                t3=t3.next;
+                t1=t1.next;
+            }else{
+                t4=t2;
+                t3=t3.next;
+                t2=t2.next;
+            }
         }
-        temp.val=val2;
-
-        temp=head;
-         for(int i=0;i<k2;i++){
-             temp=temp.next;
-         }
-         temp.val=val1;
-
+        
+        int n=0;
+        if(t1.next==null){
+           n=1; 
+        }
+        if(n==1){
+            t5.next=t2;
+            t1.next=t2.next;
+            t2.next=null;
+            head=t1;
+        }else if(k==1){
+            t4.next=t1;
+            t2.next=t1.next;
+            t1.next=null;
+            head=t2;
+        }else{
+            t5.next=t4.next;
+            t4.next=t1;
+            ListNode p=t1.next;
+            t1.next=t2.next;
+            t2.next=p;
+        }
+        
         return head;
     }
 }
