@@ -3,7 +3,7 @@ class Solution {
         int count =0;
         for(int i : nums){
             String s = i+"";
-            if((s.length())%2 ==0){
+            if(((i+"").length())%2 ==0){
                 count ++;
             }
         }
